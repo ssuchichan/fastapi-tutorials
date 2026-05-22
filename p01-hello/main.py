@@ -13,5 +13,13 @@ async def root():
 async def say_hello(name: str):
     return {"message": f"Hello {name}"}
 
-# 启动：uvicorn main:app --reload
+
+@app.get("/hello")
+async def say_hello():
+    return {"message": "你好，FastAPI"}
+
+
+@app.get("/user/hello")
+async def say_hello():
+    return {"message": "我正在学习FastAPI"}
 
