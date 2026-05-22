@@ -29,6 +29,9 @@ async def get_book(id: int):
     return {"id": id, "message": f"这是第{id}本书"}
 
 
+@app.get("/user/{id}")
+async def get_user(id: int):
+    return {"id": id, "message": f"普通用户{id}"}
 
 
 
