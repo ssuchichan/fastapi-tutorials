@@ -23,3 +23,62 @@ async def say_hello():
 async def say_hello():
     return {"message": "我正在学习FastAPI"}
 
+
+@app.get("/book/{id}")
+async def get_book(id: int):
+    return {"id": id, "message": f"这是第{id}本书"}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
