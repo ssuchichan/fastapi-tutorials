@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Path
 
 # 创建FastAPI实例
 app = FastAPI()
@@ -25,8 +25,12 @@ async def say_hello():
 
 
 @app.get("/book/{id}")
-async def get_book(id: int):
-    return {"id": id, "message": f"这是第{id}本书"}
+async def get_book(id: int = Path(...,gt=0, lt=101, description="书籍的ID,取之范围1-100")):
+    return {"id": id, "title": f"这是第{id}本书"}
+
+@app.get("/author/{name}")
+async def get_book(name: str=Path(..., max_length=10, min_length=2, description="书的作者，长度2-10字符")):
+    return {"msg": f"这是{name}的信息"}
 
 
 @app.get("/user/{id}")
