@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Path, Query
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 # 创建FastAPI实例
 app = FastAPI()
@@ -49,9 +49,9 @@ async def get_news_list(
 
 # 定义类型
 class User(BaseModel):
-    username: str
-    password: str
-    email: str
+    username: str = Field(default="王德发", min_length=2, max_length=10, description="用户名，长度为2-10各字符")
+    password: str = Field(min_length=6, max_length=32)
+    email: str = Field(...)
 
 @app.post("/register")
 async def register(user: User):
