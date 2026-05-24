@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Path, Query
 from pydantic import BaseModel, Field
+from fastapi.responses import HTMLResponse
 
 # 创建FastAPI实例
 app = FastAPI()
@@ -58,6 +59,9 @@ async def register(user: User):
     return {"username": user.username, "password": user.password, "email": user.email}
 
 
+@app.get("/html", response_class=HTMLResponse)
+async def get_html():
+    return "<h1>这是一级标题</h1>"
 
 
 

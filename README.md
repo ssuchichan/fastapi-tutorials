@@ -46,7 +46,20 @@ async def say_hello():
 - 定义类型
 - 类型注解
 
+## 响应类型
 
+默认情况下，FastAPI会自动将路径操作函数返回的Python对象（字典、列表、Pydantic模型等），经由jsonable_encoder转换为JSON兼容格式，并包装
+JSONResponse返回。这省去了手动序列化的步骤，让开发者能更专注于业务逻辑。如果需要返回非JSON数据（如HTML、文件流），FastAPI提供了丰富的响应
+了类型来返回不同数据。
+
+| 响应类型              | 用途            | 示例                                |
+|-------------------|---------------|-----------------------------------|
+| JSONResponse      | 默认响应，返回JSON数据 | return {"key":"value"}            |
+| HTMLResponse      | 返回HTML内容      | return HTMLResponse(html_content) |
+| PlainTextResponse | 返回纯文本         | return PlainTextResponse("text")  |
+| FileResponse      | 返回文件下载        | return FileResponse(path)         |
+| StreamingResponse | 流式响应          | 生成器函数返回数据                         |
+| RedirectResponse  | 重定向           | return RedirectResponse(url)      |
 
 
 
