@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Path, Query
+from fastapi import FastAPI, Path, Query, HTTPException
 from pydantic import BaseModel, Field
 from fastapi.responses import HTMLResponse, FileResponse
 
@@ -78,6 +78,9 @@ class News(BaseModel):
 
 @app.get("/news/{id}", response_model=News)
 async def get_news(id: int):
+    id_list = [1, 2, 3, 4, 5, 6]
+    if id not in id_list:
+        raise HTTPException(status_code=404, detail="您查找的新闻不存在")
     return {
         "id": id,
         "title": f"这是第{id}本书",
