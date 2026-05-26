@@ -1,7 +1,7 @@
 from datetime import datetime
-from fastapi import FastAPI
-from sqlalchemy import DateTime, func, String, Float
-from sqlalchemy.ext.asyncio import create_async_engine
+from fastapi import FastAPI, Depends
+from sqlalchemy import DateTime, func, String, Float, select
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 app = FastAPI()
@@ -53,5 +53,70 @@ async def startup():
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
+
+
+AsyncSessionLocal = async_sessionmaker(
+    bind=async_engine, # 绑定数据库引擎
+    class_=AsyncSession, # 制定会话类
+    expire_on_commit=False, # 提交后会话不过期，不会重新查询数据库
+)
+
+async def get_database():
+    async with AsyncSessionLocal() as session:
+        try:
+            yield session # 返回数据库会话给路由处理函数
+            await session.commit() # 提交事务
+        except Exception:
+            await session.rollback() # 有异常，回滚
+            raise
+        finally:
+            await session.close() # 关闭会话
+
+
+@app.get("/book/books")
+async def get_book_list(
+    db: AsyncSession = Depends(get_database)
+):
+    result = await db.execute(select(Book))
+    book = result.scalars().all()
+    return book
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
